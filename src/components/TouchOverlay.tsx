@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, type TouchEvent } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 const KEY_MAP: Record<number, string> = {
   0: 'KeyA', 1: 'KeyS', 2: 'KeyD', 3: 'KeyF',
@@ -14,6 +14,7 @@ function TouchOverlay() {
   const [pressedZones, setPressedZones] = useState(Array(9).fill(false));
   const zoneRefs = useRef<(HTMLDivElement | null)[]>([]);
   const touchToZoneMap = useRef<Map<number, number>>(new Map());
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const getZoneIndexFromCoordinates = useCallback((x: number, y: number) => {
     for (let i = 0; i < zoneRefs.current.length; i++) {
@@ -28,52 +29,58 @@ function TouchOverlay() {
     return -1;
   }, []);
 
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    setPressedZones(currentPressed => {
-      const nextPressed = [...currentPressed];
-      for (const touch of Array.from(e.changedTouches)) {
-        const zoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
-        if (zoneIndex !== -1 && !touchToZoneMap.current.has(touch.identifier)) {
-          touchToZoneMap.current.set(touch.identifier, zoneIndex);
-          dispatchKeyEvent(KEY_MAP[zoneIndex], 'keydown');
-          nextPressed[zoneIndex] = true;
-        }
-      }
-      return nextPressed;
-    });
-  };
+  useEffect(() => {
+    const overlayNode = overlayRef.current;
+    if (!overlayNode) return;
 
-  const handleTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
-    setPressedZones(currentPressed => {
-      const nextPressed = [...currentPressed];
-      for (const touch of Array.from(e.changedTouches)) {
-        const zoneIndex = touchToZoneMap.current.get(touch.identifier);
-        if (zoneIndex !== undefined) {
-          touchToZoneMap.current.delete(touch.identifier);
-          dispatchKeyEvent(KEY_MAP[zoneIndex], 'keyup');
-          nextPressed[zoneIndex] = false;
+    const handleTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      setPressedZones(currentPressed => {
+        const nextPressed = [...currentPressed];
+        for (const touch of Array.from(e.changedTouches)) {
+          const zoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
+          if (zoneIndex !== -1 && !touchToZoneMap.current.has(touch.identifier)) {
+            touchToZoneMap.current.set(touch.identifier, zoneIndex);
+            dispatchKeyEvent(KEY_MAP[zoneIndex], 'keydown');
+            nextPressed[zoneIndex] = true;
+          }
         }
-      }
-      return nextPressed;
-    });
-  };
+        return nextPressed;
+      });
+    };
 
-  const handleTouchCancel = () => {
-    // When a touch is cancelled (e.g., by a system gesture), release all keys.
-    for (const zoneIndex of touchToZoneMap.current.values()) {
-      dispatchKeyEvent(KEY_MAP[zoneIndex], 'keyup');
-    }
-    touchToZoneMap.current.clear();
-    setPressedZones(Array(9).fill(false));
-  };
+    const handleTouchEndOrCancel = (e: TouchEvent) => {
+      e.preventDefault();
+      setPressedZones(currentPressed => {
+        const nextPressed = [...currentPressed];
+        for (const touch of Array.from(e.changedTouches)) {
+          const zoneIndex = touchToZoneMap.current.get(touch.identifier);
+          if (zoneIndex !== undefined) {
+            touchToZoneMap.current.delete(touch.identifier);
+            dispatchKeyEvent(KEY_MAP[zoneIndex], 'keyup');
+            nextPressed[zoneIndex] = false;
+          }
+        }
+        return nextPressed;
+      });
+    };
+
+    overlayNode.addEventListener('touchstart', handleTouchStart as EventListener, { passive: false });
+    overlayNode.addEventListener('touchend', handleTouchEndOrCancel as EventListener, { passive: false });
+    overlayNode.addEventListener('touchcancel', handleTouchEndOrCancel as EventListener, { passive: false });
+
+    return () => {
+      overlayNode.removeEventListener('touchstart', handleTouchStart as EventListener);
+      overlayNode.removeEventListener('touchend', handleTouchEndOrCancel as EventListener);
+      overlayNode.removeEventListener('touchcancel', handleTouchEndOrCancel as EventListener);
+    };
+  }, [getZoneIndexFromCoordinates]);
 
   return (
     <div
+      ref={overlayRef}
       className="absolute inset-0 z-10 flex flex-col"
       style={{ touchAction: 'none' }}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onTouchCancel={handleTouchCancel}
     >
       <div className="grow flex">
         {Array.from({ length: 8 }).map((_, i) => (
