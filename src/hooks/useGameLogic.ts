@@ -89,6 +89,7 @@ export function useGameLogic() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      audioManager.releaseAll(); // Clean up all sounds on dismount
     };
   }, [currentLevel, playerState, startTime, setPlayerState, setStartTime, checkWinCondition]);
 

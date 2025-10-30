@@ -50,6 +50,8 @@ function ResultScreen() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
+      // Stop any lingering sounds before proceeding
+      audioManager.releaseAll();
       handleNextLevel();
     };
     if (hasNextLevel) {
