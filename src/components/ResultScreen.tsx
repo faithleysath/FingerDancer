@@ -27,6 +27,11 @@ function ResultScreen() {
   const setPlayerState = useSetAtom(playerStateAtom);
   const setCurrentStep = useSetAtom(currentStepAtom);
   const setStartTime = useSetAtom(startTimeAtom);
+
+  // Ensure all sounds are stopped when the result screen appears.
+  useEffect(() => {
+    audioManager.releaseAll();
+  }, []);
   
   const hasNextLevel = currentLevel && currentLevelIdx + 1 < levelIndex.length;
 
