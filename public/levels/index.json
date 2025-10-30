@@ -1,0 +1,14 @@
+[
+  { "id": 1, "name": "1. Introduction (All Keys)", "file": "1.json" },
+  { "id": 2, "name": "2. Simple Pairs (J+K, L+;)", "file": "2.json" },
+  { "id": 3, "name": "3. Thumb Combos (Space+)", "file": "3.json" },
+  { "id": 4, "name": "4. Basic Alternation (J, K, J, K)", "file": "4.json" },
+  { "id": 5, "name": "5. Skipping Keys (J+L, K+;)", "file": "5.json" },
+  { "id": 6, "name": "6. Outer Edges (Space+;, J+;)", "file": "6.json" },
+  { "id": 7, "name": "7. First Trios (J+K+L, K+L+;)", "file": "7.json" },
+  { "id": 8, "name": "8. Simple Rolls (J -> J+K -> J+K+L)", "file": "8.json" },
+  { "id": 9, "name": "9. Thumb Rolls (Space -> Space+J -> Space+J+K)", "file": "9.json" },
+  { "id": 10, "name": "10. Full Hand Chords (3-key & 4-key)", "file": "10.json" },
+  { "id": 11, "name": "11. The Five Keys (All Keys!)", "file": "11.json" },
+  { "id": 12, "name": "12. Finale (A mix of everything)", "file": "12.json" }
+]
