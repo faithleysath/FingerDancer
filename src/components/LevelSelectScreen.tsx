@@ -11,9 +11,11 @@ import {
 } from '../atoms/gameAtoms';
 import { audioManager, scales, type ScaleName } from '../lib/audio';
 import { useMenuKeyboard } from '../hooks/useMenuKeyboard';
+import { useFullscreen } from '../hooks/useFullscreen';
 
 function LevelSelectScreen() {
   useMenuKeyboard(); // Enable keyboard sounds on this screen
+  const { enterFullscreen } = useFullscreen();
   const [levelIndex, setLevelIndex] = useAtom(levelIndexAtom);
   const [currentScale, setCurrentScale] = useAtom(scaleAtom);
   const setScreen = useSetAtom(screenAtom);
@@ -37,6 +39,7 @@ function LevelSelectScreen() {
         await audioManager.start();
       }
       
+      await enterFullscreen();
       const res = await fetch(`/levels/${levelInfo.file}`);
       const levelData: Level = await res.json();
       setCurrentLevel(levelData);

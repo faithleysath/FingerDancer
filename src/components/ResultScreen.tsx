@@ -12,8 +12,10 @@ import {
 } from '../atoms/gameAtoms';
 import { useEffect, useCallback } from 'react';
 import { audioManager } from '../lib/audio';
+import { useFullscreen } from '../hooks/useFullscreen';
 
 function ResultScreen() {
+  const { enterFullscreen } = useFullscreen();
   const finalTime = useAtomValue(finalTimeAtom);
   const currentLevel = useAtomValue(currentLevelAtom);
   const levelIndex = useAtomValue(levelIndexAtom);
@@ -31,6 +33,7 @@ function ResultScreen() {
     const nextLevelIndex = currentLevelIdx + 1;
     const nextLevelInfo = levelIndex[nextLevelIndex];
     try {
+      await enterFullscreen();
       const res = await fetch(`/levels/${nextLevelInfo.file}`);
       const levelData: Level = await res.json();
       
@@ -44,7 +47,7 @@ function ResultScreen() {
     } catch (error) {
       console.error('Failed to load next level:', error);
     }
-  }, [hasNextLevel, currentLevelIdx, levelIndex, setCurrentLevel, setCurrentLevelIndex, setScreen, setPlayerState, setCurrentStep, setStartTime]);
+  }, [hasNextLevel, currentLevelIdx, levelIndex, setCurrentLevel, setCurrentLevelIndex, setScreen, setPlayerState, setCurrentStep, setStartTime, enterFullscreen]);
 
   // "Any key to continue" effect
   useEffect(() => {
