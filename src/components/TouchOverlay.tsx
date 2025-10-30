@@ -16,7 +16,7 @@ function TouchOverlay() {
   // State to track which zones are currently being pressed for visual feedback
   const [pressedZones, setPressedZones] = useState<boolean[]>(Array(9).fill(false));
 
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>, index: number) => {
+  const handleTouchStart = (_: TouchEvent<HTMLDivElement>, index: number) => {
     const code = KEY_MAP[index];
     if (code) {
       dispatchKeyEvent(code, 'keydown');
@@ -28,7 +28,7 @@ function TouchOverlay() {
     }
   };
 
-  const handleTouchEnd = (e: TouchEvent<HTMLDivElement>, index: number) => {
+  const handleTouchEnd = (_: TouchEvent<HTMLDivElement>, index: number) => {
     const code = KEY_MAP[index];
     if (code) {
       dispatchKeyEvent(code, 'keyup');
