@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useAtom, useSetAtom } from 'jotai';
+import { Suspense } from 'react';
+import { useAtom, useSetAtom, useAtomValue } from 'jotai';
 import {
   screenAtom,
   levelIndexAtom,
@@ -14,25 +14,13 @@ import { useMenuKeyboard } from '../hooks/useMenuKeyboard';
 import { useFullscreen } from '../hooks/useFullscreen';
 import { useScreenOrientation } from '../hooks/useScreenOrientation';
 
-function LevelSelectScreen() {
-  useMenuKeyboard(); // Enable keyboard sounds on this screen
-  const { enterFullscreen } = useFullscreen();
-  const { lockOrientation } = useScreenOrientation();
-  const [levelIndex, setLevelIndex] = useAtom(levelIndexAtom);
-  const [currentScale, setCurrentScale] = useAtom(scaleAtom);
+function LevelList() {
+  const levelIndex = useAtomValue(levelIndexAtom);
   const setScreen = useSetAtom(screenAtom);
   const setCurrentLevel = useSetAtom(currentLevelAtom);
   const setCurrentLevelIndex = useSetAtom(currentLevelIndexAtom);
-
-  useEffect(() => {
-    // Fetch the level index when the component mounts
-    if (levelIndex.length === 0) {
-      fetch('/levels/index.json')
-        .then((res) => res.json())
-        .then((data: LevelIndexInfo[]) => setLevelIndex(data))
-        .catch(console.error);
-    }
-  }, [levelIndex, setLevelIndex]);
+  const { enterFullscreen } = useFullscreen();
+  const { lockOrientation } = useScreenOrientation();
 
   const handleLevelSelect = async (levelInfo: LevelIndexInfo, index: number) => {
     try {
@@ -53,6 +41,24 @@ function LevelSelectScreen() {
     }
   };
 
+  return (
+    <div className="flex flex-col gap-4 max-h-[40vh] overflow-y-auto pr-1 border-t border-white/20 pt-4">
+      {levelIndex.map((level, index) => (
+        <button
+          key={level.id}
+          onClick={() => handleLevelSelect(level, index)}
+          className="bg-white text-emerald-600 text-lg font-bold border-none py-4 px-5 rounded-xl cursor-pointer transition-transform duration-100 ease-in-out hover:scale-105"
+        >
+          {level.name}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function LevelSelectScreen() {
+  useMenuKeyboard(); // Enable keyboard sounds on this screen
+  const [currentScale, setCurrentScale] = useAtom(scaleAtom);
   const handleScaleChange = (newScale: ScaleName) => {
     setCurrentScale(newScale);
     audioManager.setScale(newScale);
@@ -83,17 +89,9 @@ function LevelSelectScreen() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 max-h-[40vh] overflow-y-auto pr-1 border-t border-white/20 pt-4">
-        {levelIndex.map((level, index) => (
-          <button
-            key={level.id}
-            onClick={() => handleLevelSelect(level, index)}
-            className="bg-white text-emerald-600 text-lg font-bold border-none py-4 px-5 rounded-xl cursor-pointer transition-transform duration-100 ease-in-out hover:scale-105"
-          >
-            {level.name}
-          </button>
-        ))}
-      </div>
+      <Suspense fallback={<div className="text-center p-8">Loading levels...</div>}>
+        <LevelList />
+      </Suspense>
     </section>
   );
 }

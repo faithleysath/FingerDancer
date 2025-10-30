@@ -21,8 +21,14 @@ export interface LevelIndexInfo {
 // Controls which screen is currently visible
 export const screenAtom = atom<Screen>('levelSelect');
 
-// Holds the list of all available levels (from index.json)
-export const levelIndexAtom = atom<LevelIndexInfo[]>([]);
+// Asynchronously fetches and holds the list of all available levels
+export const levelIndexAtom = atom(async () => {
+  const response = await fetch('/levels/index.json');
+  if (!response.ok) {
+    throw new Error('Failed to fetch level index');
+  }
+  return response.json() as Promise<LevelIndexInfo[]>;
+});
 
 // Controls the currently selected musical scale
 export const scaleAtom = atom<ScaleName>('C Major Chord');
