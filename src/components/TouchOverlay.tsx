@@ -126,7 +126,7 @@ function TouchOverlay() {
       </div>
       <div
         ref={el => { zoneRefs.current[8] = el; }}
-        className={`h-1/4 border-t border-white/10 ${
+        className={`h-1/5 border-t border-white/10 ${
           pressedZones[8] ? 'bg-white/30' : 'bg-transparent'
         } transition-colors duration-200`}
       />
