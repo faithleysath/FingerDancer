@@ -5,6 +5,9 @@ import {
   screenAtom,
   levelIndexAtom,
   currentLevelIndexAtom,
+  playerStateAtom,
+  currentStepAtom,
+  startTimeAtom,
   type Level,
 } from '../atoms/gameAtoms';
 import { useEffect, useCallback } from 'react';
@@ -17,6 +20,9 @@ function ResultScreen() {
   const [currentLevelIdx, setCurrentLevelIndex] = useAtom(currentLevelIndexAtom);
   const setScreen = useSetAtom(screenAtom);
   const setCurrentLevel = useSetAtom(currentLevelAtom);
+  const setPlayerState = useSetAtom(playerStateAtom);
+  const setCurrentStep = useSetAtom(currentStepAtom);
+  const setStartTime = useSetAtom(startTimeAtom);
   
   const hasNextLevel = currentLevel && currentLevelIdx + 1 < levelIndex.length;
 
@@ -27,13 +33,18 @@ function ResultScreen() {
     try {
       const res = await fetch(`/levels/${nextLevelInfo.file}`);
       const levelData: Level = await res.json();
+      
+      // Atomically update all state before switching screens
       setCurrentLevel(levelData);
       setCurrentLevelIndex(nextLevelIndex);
+      setPlayerState([0, 0, 0, 0, 0]);
+      setCurrentStep(0);
+      setStartTime(0);
       setScreen('game');
     } catch (error) {
       console.error('Failed to load next level:', error);
     }
-  }, [hasNextLevel, currentLevelIdx, levelIndex, setCurrentLevel, setCurrentLevelIndex, setScreen]);
+  }, [hasNextLevel, currentLevelIdx, levelIndex, setCurrentLevel, setCurrentLevelIndex, setScreen, setPlayerState, setCurrentStep, setStartTime]);
 
   // "Any key to continue" effect
   useEffect(() => {
