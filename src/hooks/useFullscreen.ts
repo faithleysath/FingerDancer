@@ -11,7 +11,7 @@ export function useFullscreen() {
   const enterFullscreen = useCallback(async () => {
     try {
       if (screenfull.isEnabled) {
-        await screenfull.request();
+        await screenfull.request(undefined, { navigationUI: 'hide' });
       } else {
         console.warn('Fullscreen API is not available.');
       }
@@ -35,7 +35,7 @@ export function useFullscreen() {
   const toggleFullscreen = useCallback(async () => {
     try {
       if (screenfull.isEnabled) {
-        await screenfull.toggle();
+        await screenfull.toggle(undefined, { navigationUI: 'hide' });
       } else {
         console.warn('Fullscreen API is not available.');
       }
