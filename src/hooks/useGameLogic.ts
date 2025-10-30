@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useAtom, useSetAtom, useAtomValue } from 'jotai';
 import {
   screenAtom,
@@ -23,14 +23,16 @@ const CODE_MAP: Record<string, { index: number, key: string }> = {
 };
 
 export function useGameLogic() {
+  const pressedKeys = useRef(new Set<string>());
   const setScreen = useSetAtom(screenAtom);
   const currentLevel = useAtomValue(currentLevelAtom);
-  const [playerState, setPlayerState] = useAtom(playerStateAtom);
+  const setPlayerState = useSetAtom(playerStateAtom);
   const [currentStep, setCurrentStep] = useAtom(currentStepAtom);
   const [startTime, setStartTime] = useAtom(startTimeAtom);
   const setFinalTime = useSetAtom(finalTimeAtom);
 
   const resetGameState = useCallback(() => {
+    pressedKeys.current.clear();
     setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setCurrentStep(0);
     setStartTime(0);
@@ -46,7 +48,6 @@ export function useGameLogic() {
       if (currentStep < currentLevel.patterns.length - 1) {
         setCurrentStep(currentStep + 1);
       } else {
-        // Level complete
         audioManager.releaseAll();
         const endTime = Date.now();
         setFinalTime(endTime - startTime);
@@ -58,35 +59,43 @@ export function useGameLogic() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const keyInfo = CODE_MAP[e.code];
-      if (keyInfo === undefined || !currentLevel) return;
+      if (keyInfo === undefined || !currentLevel || pressedKeys.current.has(e.code)) return;
 
       e.preventDefault();
+      pressedKeys.current.add(e.code);
 
-      // Start timer on first key press
-      if (startTime === 0) {
-        setStartTime(Date.now());
-      }
-
-      if (playerState[keyInfo.index] === 1) return; // Key already pressed
+      setStartTime((prevStartTime) => {
+        if (prevStartTime === 0) {
+          return Date.now();
+        }
+        return prevStartTime;
+      });
 
       audioManager.playNote(keyInfo.key);
-      const newState = [...playerState];
-      newState[keyInfo.index] = 1;
-      setPlayerState(newState);
-      checkWinCondition(newState);
+      
+      setPlayerState(prevPlayerState => {
+        const newState = [...prevPlayerState];
+        newState[keyInfo.index] = 1;
+        checkWinCondition(newState);
+        return newState;
+      });
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
       const keyInfo = CODE_MAP[e.code];
       if (keyInfo === undefined || !currentLevel) return;
 
-      if (playerState[keyInfo.index] === 0) return; // Key already released
+      e.preventDefault();
+      pressedKeys.current.delete(e.code);
 
       audioManager.releaseNote(keyInfo.key);
-      const newState = [...playerState];
-      newState[keyInfo.index] = 0;
-      setPlayerState(newState);
-      checkWinCondition(newState);
+
+      setPlayerState(prevPlayerState => {
+        const newState = [...prevPlayerState];
+        newState[keyInfo.index] = 0;
+        checkWinCondition(newState);
+        return newState;
+      });
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -95,11 +104,10 @@ export function useGameLogic() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
-      audioManager.releaseAll(); // Clean up all sounds on dismount
+      audioManager.releaseAll();
     };
-  }, [currentLevel, playerState, startTime, setPlayerState, setStartTime, checkWinCondition]);
+  }, [currentLevel, checkWinCondition, setPlayerState, setStartTime]);
 
-  // Effect to reset game state when the level changes (or on mount)
   useEffect(() => {
     resetGameState();
   }, [currentLevel, resetGameState]);

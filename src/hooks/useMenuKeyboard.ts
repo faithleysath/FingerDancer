@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAtomValue } from 'jotai';
 import { screenAtom } from '../atoms/gameAtoms';
 import { audioManager } from '../lib/audio';
@@ -17,6 +17,7 @@ const CODE_MAP: Record<string, { index: number, key: string }> = {
 
 export function useMenuKeyboard() {
   const currentScreen = useAtomValue(screenAtom);
+  const pressedKeys = useRef(new Set<string>());
 
   useEffect(() => {
     // This effect should only run when on the level select screen
@@ -26,8 +27,10 @@ export function useMenuKeyboard() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const keyInfo = CODE_MAP[e.code];
-      if (keyInfo === undefined) return;
+      if (keyInfo === undefined || pressedKeys.current.has(e.code)) return;
+      
       e.preventDefault();
+      pressedKeys.current.add(e.code);
       
       // Initialize audio on first key press if not already done
       if (!audioManager.isInitialized()) {
@@ -40,7 +43,9 @@ export function useMenuKeyboard() {
     const handleKeyUp = (e: KeyboardEvent) => {
       const keyInfo = CODE_MAP[e.code];
       if (keyInfo === undefined) return;
+
       e.preventDefault();
+      pressedKeys.current.delete(e.code);
       audioManager.releaseNote(keyInfo.key);
     };
 
