@@ -49,6 +49,35 @@ function TouchOverlay() {
       });
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      setPressedZones(currentPressed => {
+        const nextPressed = [...currentPressed];
+        for (const touch of Array.from(e.changedTouches)) {
+          const oldZoneIndex = touchToZoneMap.current.get(touch.identifier);
+          const newZoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
+
+          if (oldZoneIndex !== newZoneIndex) {
+            // Release the old key
+            if (oldZoneIndex !== undefined) {
+              dispatchKeyEvent(KEY_MAP[oldZoneIndex], 'keyup');
+              nextPressed[oldZoneIndex] = false;
+            }
+            // Press the new key
+            if (newZoneIndex !== -1) {
+              touchToZoneMap.current.set(touch.identifier, newZoneIndex);
+              dispatchKeyEvent(KEY_MAP[newZoneIndex], 'keydown');
+              nextPressed[newZoneIndex] = true;
+            } else {
+              // Finger moved out of any valid zone
+              touchToZoneMap.current.delete(touch.identifier);
+            }
+          }
+        }
+        return nextPressed;
+      });
+    };
+
     const handleTouchEndOrCancel = (e: TouchEvent) => {
       e.preventDefault();
       setPressedZones(currentPressed => {
@@ -66,11 +95,13 @@ function TouchOverlay() {
     };
 
     overlayNode.addEventListener('touchstart', handleTouchStart as EventListener, { passive: false });
+    overlayNode.addEventListener('touchmove', handleTouchMove as EventListener, { passive: false });
     overlayNode.addEventListener('touchend', handleTouchEndOrCancel as EventListener, { passive: false });
     overlayNode.addEventListener('touchcancel', handleTouchEndOrCancel as EventListener, { passive: false });
 
     return () => {
       overlayNode.removeEventListener('touchstart', handleTouchStart as EventListener);
+      overlayNode.removeEventListener('touchmove', handleTouchMove as EventListener);
       overlayNode.removeEventListener('touchend', handleTouchEndOrCancel as EventListener);
       overlayNode.removeEventListener('touchcancel', handleTouchEndOrCancel as EventListener);
     };
