@@ -4,9 +4,11 @@ import { audioManager } from './lib/audio';
 import { screenAtom } from './atoms/gameAtoms';
 import GameContainer from './components/GameContainer';
 import { useGameLogic } from './hooks/useGameLogic';
+import { useGlobalAudio } from './hooks/useGlobalAudio';
 
 
 function App() {
+  useGlobalAudio(); // Mount the global audio handler
   const [screen, setScreen] = useAtom(screenAtom);
   const { resetGameState } = useGameLogic();
 

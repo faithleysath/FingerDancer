@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAtomValue } from 'jotai';
 import { screenAtom } from '../atoms/gameAtoms';
-import { audioManager } from '../lib/audio';
 
 const CODE_MAP: Record<string, { index: number, key: string }> = {
   'KeyA': { index: 0, key: 'a' },
@@ -31,13 +30,6 @@ export function useMenuKeyboard() {
       
       e.preventDefault();
       pressedKeys.current.add(e.code);
-      
-      // Initialize audio on first key press if not already done
-      if (!audioManager.isInitialized()) {
-        audioManager.start();
-      }
-      
-      audioManager.playNote(keyInfo.key);
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -46,7 +38,6 @@ export function useMenuKeyboard() {
 
       e.preventDefault();
       pressedKeys.current.delete(e.code);
-      audioManager.releaseNote(keyInfo.key);
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -55,7 +46,6 @@ export function useMenuKeyboard() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
-      audioManager.releaseAll(); // Stop any sound when leaving the screen
     };
   }, [currentScreen]);
 }

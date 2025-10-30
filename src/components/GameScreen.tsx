@@ -1,6 +1,5 @@
 import { useAtomValue } from 'jotai';
 import { currentLevelAtom, playerStateAtom, currentStepAtom, startTimeAtom } from '../atoms/gameAtoms';
-import { useGameLogic } from '../hooks/useGameLogic';
 import { useEffect, useState } from 'react';
 import Dot from './Dot';
 
@@ -31,7 +30,6 @@ function Timer() {
 }
 
 function GameScreen() {
-  useGameLogic(); // Initialize game logic and event listeners
   const currentLevel = useAtomValue(currentLevelAtom);
   const playerState = useAtomValue(playerStateAtom);
   const currentStep = useAtomValue(currentStepAtom);

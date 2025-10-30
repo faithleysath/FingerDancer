@@ -32,6 +32,7 @@ export function useGameLogic() {
   const setFinalTime = useSetAtom(finalTimeAtom);
 
   const resetGameState = useCallback(() => {
+    audioManager.releaseAll();
     pressedKeys.current.clear();
     setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setCurrentStep(0);
@@ -70,8 +71,6 @@ export function useGameLogic() {
         }
         return prevStartTime;
       });
-
-      audioManager.playNote(keyInfo.key);
       
       setPlayerState(prevPlayerState => {
         const newState = [...prevPlayerState];
@@ -88,8 +87,6 @@ export function useGameLogic() {
       e.preventDefault();
       pressedKeys.current.delete(e.code);
 
-      audioManager.releaseNote(keyInfo.key);
-
       setPlayerState(prevPlayerState => {
         const newState = [...prevPlayerState];
         newState[keyInfo.index] = 0;
@@ -104,7 +101,6 @@ export function useGameLogic() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
-      audioManager.releaseAll();
     };
   }, [currentLevel, checkWinCondition, setPlayerState, setStartTime]);
 
