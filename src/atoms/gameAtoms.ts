@@ -1,4 +1,5 @@
 import { atom } from 'jotai';
+import { type ScaleName } from '../lib/audio';
 
 // --- Types ---
 export type Screen = 'levelSelect' | 'game' | 'result';
@@ -23,14 +24,17 @@ export const screenAtom = atom<Screen>('levelSelect');
 // Holds the list of all available levels (from index.json)
 export const levelIndexAtom = atom<LevelIndexInfo[]>([]);
 
+// Controls the currently selected musical scale
+export const scaleAtom = atom<ScaleName>('C Major Chord');
+
 // Holds the data for the currently selected level
 export const currentLevelAtom = atom<Level | null>(null);
 
 // Holds the index of the current level being played
 export const currentLevelIndexAtom = atom<number>(-1);
 
-// Represents the player's current key presses [Space, J, K, L, ;]
-export const playerStateAtom = atom<number[]>([0, 0, 0, 0, 0]);
+// Represents the player's current key presses [A, S, D, F, Space, J, K, L, ;]
+export const playerStateAtom = atom<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
 // The current step/pattern the player is on within a level
 export const currentStepAtom = atom<number>(0);

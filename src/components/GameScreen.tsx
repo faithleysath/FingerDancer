@@ -4,7 +4,7 @@ import { useGameLogic } from '../hooks/useGameLogic';
 import { useEffect, useState } from 'react';
 import Dot from './Dot';
 
-const KEY_LABELS = ['SPACE', 'J', 'K', 'L', ';'];
+const KEY_LABELS = ['A', 'S', 'D', 'F', 'SPACE', 'J', 'K', 'L', ';'];
 
 function Timer() {
   const startTime = useAtomValue(startTimeAtom);
@@ -47,7 +47,7 @@ function GameScreen() {
     return pattern.map((isPressedValue, index) => (
       <Dot
         key={index}
-        variant={index === 0 ? 'space' : 'key'}
+        variant={index === 4 ? 'space' : 'key'}
         isPressed={isPressedValue === 1}
         isPlayer={isPlayer}
         isTarget={!isPlayer}
@@ -56,7 +56,7 @@ function GameScreen() {
   };
 
   return (
-    <section className="w-[90%] max-w-xl p-5 rounded-2xl bg-black/10 backdrop-blur-lg border border-white/20">
+    <section className="w-[90%] max-w-3xl p-5 rounded-2xl bg-black/10 backdrop-blur-lg border border-white/20">
       <header className="flex justify-between items-center mb-5">
         <h2 className="text-2xl font-bold">{currentLevel.name}</h2>
         <Timer />
@@ -78,7 +78,7 @@ function GameScreen() {
           <div
             key={label}
             className={`h-16 flex justify-center items-center text-3xl font-black text-white/30 ${
-              index === 0 ? 'w-32 text-2xl' : 'w-16'
+              index === 4 ? 'w-32 text-2xl' : 'w-16'
             }`}
           >
             {label}

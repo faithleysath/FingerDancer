@@ -95,7 +95,7 @@ function ResultScreen() {
 
 
   return (
-    <section className="w-[90%] max-w-xl p-5 rounded-2xl bg-black/10 backdrop-blur-lg border border-white/20 text-center">
+    <section className="w-[90%] max-w-3xl p-5 rounded-2xl bg-black/10 backdrop-blur-lg border border-white/20 text-center">
       <h2 className="text-3xl font-black mb-6">Level Complete!</h2>
       <div className={`text-9xl font-black leading-none mb-2.5 ${rankColor}`}>{rank}</div>
       <div className="text-2xl font-bold mb-8">Your Time: {finalTimeInSeconds.toFixed(2)}s</div>

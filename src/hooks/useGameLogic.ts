@@ -10,7 +10,11 @@ import {
 } from '../atoms/gameAtoms';
 import { audioManager } from '../lib/audio';
 
-const KEY_MAP: Record<string, number> = { ' ': 0, 'j': 1, 'k': 2, 'l': 3, ';': 4 };
+const KEY_MAP: Record<string, number> = {
+  'a': 0, 's': 1, 'd': 2, 'f': 3,
+  ' ': 4,
+  'j': 5, 'k': 6, 'l': 7, ';': 8
+};
 
 export function useGameLogic() {
   const setScreen = useSetAtom(screenAtom);
@@ -21,7 +25,7 @@ export function useGameLogic() {
   const setFinalTime = useSetAtom(finalTimeAtom);
 
   const resetGameState = useCallback(() => {
-    setPlayerState([0, 0, 0, 0, 0]);
+    setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     setCurrentStep(0);
     setStartTime(0);
   }, [setPlayerState, setCurrentStep, setStartTime]);
