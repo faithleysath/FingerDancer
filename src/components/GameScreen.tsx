@@ -27,7 +27,7 @@ function Timer() {
     return () => cancelAnimationFrame(animationFrameId);
   }, [startTime]);
 
-  return <span className="text-2xl font-bold min-w-[80px] text-right">{(time / 1000).toFixed(2)}s</span>;
+  return <span className="text-2xl font-bold min-w-20 text-right">{(time / 1000).toFixed(2)}s</span>;
 }
 
 function GameScreen() {
@@ -56,7 +56,7 @@ function GameScreen() {
   };
 
   return (
-    <section className="w-[90%] max-w-xl p-5 rounded-2xl bg-panel backdrop-blur-lg border border-white/20">
+    <section className="w-[90%] max-w-xl p-5 rounded-2xl bg-black/10 backdrop-blur-lg border border-white/20">
       <header className="flex justify-between items-center mb-5">
         <h2 className="text-2xl font-bold">{currentLevel.name}</h2>
         <Timer />

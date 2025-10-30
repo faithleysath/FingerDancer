@@ -7,7 +7,7 @@ import {
   currentLevelIndexAtom,
   type Level,
 } from '../atoms/gameAtoms';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { audioManager } from '../lib/audio';
 
 function ResultScreen() {
@@ -20,7 +20,7 @@ function ResultScreen() {
   
   const hasNextLevel = currentLevel && currentLevelIdx + 1 < levelIndex.length;
 
-  const handleNextLevel = async () => {
+  const handleNextLevel = useCallback(async () => {
     if (!hasNextLevel) return;
     const nextLevelIndex = currentLevelIdx + 1;
     const nextLevelInfo = levelIndex[nextLevelIndex];
@@ -33,7 +33,7 @@ function ResultScreen() {
     } catch (error) {
       console.error('Failed to load next level:', error);
     }
-  };
+  }, [hasNextLevel, currentLevelIdx, levelIndex, setCurrentLevel, setCurrentLevelIndex, setScreen]);
 
   // "Any key to continue" effect
   useEffect(() => {
@@ -49,7 +49,7 @@ function ResultScreen() {
         window.removeEventListener('keydown', handleKeyDown);
       }
     };
-  }, [hasNextLevel, currentLevelIdx]);
+  }, [hasNextLevel, handleNextLevel]);
 
   if (!currentLevel) {
     // Should not happen, but as a fallback
@@ -64,17 +64,17 @@ function ResultScreen() {
   const finalTimeInSeconds = finalTime / 1000;
   const ranks = currentLevel.ranks;
   let rank = 'C';
-  let rankColor = 'text-rank-c';
+  let rankColor = 'text-slate-500';
 
   if (finalTimeInSeconds <= ranks[0]) {
     rank = 'S';
-    rankColor = 'text-rank-s';
+    rankColor = 'text-yellow-400';
   } else if (finalTimeInSeconds <= ranks[1]) {
     rank = 'A';
-    rankColor = 'text-rank-a';
+    rankColor = 'text-slate-400';
   } else if (finalTimeInSeconds <= ranks[2]) {
     rank = 'B';
-    rankColor = 'text-rank-b';
+    rankColor = 'text-amber-700';
   }
 
   const handleBackToMenu = () => {
@@ -84,18 +84,18 @@ function ResultScreen() {
 
 
   return (
-    <section className="w-[90%] max-w-xl p-5 rounded-2xl bg-panel backdrop-blur-lg border border-white/20 text-center">
+    <section className="w-[90%] max-w-xl p-5 rounded-2xl bg-black/10 backdrop-blur-lg border border-white/20 text-center">
       <h2 className="text-3xl font-black mb-6">Level Complete!</h2>
       <div className={`text-9xl font-black leading-none mb-2.5 ${rankColor}`}>{rank}</div>
       <div className="text-2xl font-bold mb-8">Your Time: {finalTimeInSeconds.toFixed(2)}s</div>
       
       <div className="flex justify-center gap-4">
         {hasNextLevel && (
-          <button onClick={handleNextLevel} className="bg-dot text-game-bg text-lg font-bold py-3 px-5 rounded-xl cursor-pointer transition-transform hover:scale-105">
+          <button onClick={handleNextLevel} className="bg-white text-emerald-600 text-lg font-bold py-3 px-5 rounded-xl cursor-pointer transition-transform hover:scale-105">
             Next Level (Any Key)
           </button>
         )}
-        <button onClick={handleBackToMenu} className="bg-dot text-game-bg text-lg font-bold py-3 px-5 rounded-xl cursor-pointer transition-transform hover:scale-105">
+        <button onClick={handleBackToMenu} className="bg-white text-emerald-600 text-lg font-bold py-3 px-5 rounded-xl cursor-pointer transition-transform hover:scale-105">
           Back to Menu
         </button>
       </div>

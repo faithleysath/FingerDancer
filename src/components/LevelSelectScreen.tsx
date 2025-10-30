@@ -44,14 +44,14 @@ function LevelSelectScreen() {
   };
 
   return (
-    <section className="w-[90%] max-w-xl p-5 rounded-2xl bg-panel backdrop-blur-lg border border-white/20">
+    <section className="w-[90%] max-w-xl p-5 rounded-2xl bg-black/10 backdrop-blur-lg border border-white/20">
       <h1 className="text-center font-black text-4xl mb-6">Finger Dance</h1>
       <div className="flex flex-col gap-4 max-h-[60vh] overflow-y-auto pr-1">
         {levelIndex.map((level, index) => (
           <button
             key={level.id}
             onClick={() => handleLevelSelect(level, index)}
-            className="bg-dot text-game-bg text-lg font-bold border-none py-4 px-5 rounded-xl cursor-pointer transition-transform duration-100 ease-in-out hover:scale-105"
+            className="bg-white text-emerald-600 text-lg font-bold border-none py-4 px-5 rounded-xl cursor-pointer transition-transform duration-100 ease-in-out hover:scale-105"
           >
             {level.name}
           </button>

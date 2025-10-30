@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useAtom, useSetAtom, useAtomValue } from 'jotai';
 import {
   screenAtom,
@@ -20,13 +20,13 @@ export function useGameLogic() {
   const [startTime, setStartTime] = useAtom(startTimeAtom);
   const setFinalTime = useSetAtom(finalTimeAtom);
 
-  const resetGameState = () => {
+  const resetGameState = useCallback(() => {
     setPlayerState([0, 0, 0, 0, 0]);
     setCurrentStep(0);
     setStartTime(0);
-  };
+  }, [setPlayerState, setCurrentStep, setStartTime]);
 
-  const checkWinCondition = (currentState: number[]) => {
+  const checkWinCondition = useCallback((currentState: number[]) => {
     if (!currentLevel) return;
 
     const targetPattern = currentLevel.patterns[currentStep];
@@ -43,7 +43,7 @@ export function useGameLogic() {
         setScreen('result');
       }
     }
-  };
+  }, [currentLevel, currentStep, setCurrentStep, setFinalTime, startTime, setScreen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -86,10 +86,10 @@ export function useGameLogic() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [currentLevel, playerState, currentStep, startTime, setPlayerState, setCurrentStep, setStartTime, setScreen, setFinalTime]);
+  }, [currentLevel, playerState, startTime, setPlayerState, setStartTime, checkWinCondition]);
 
   // Effect to reset game state when the level changes (or on mount)
   useEffect(() => {
     resetGameState();
-  }, [currentLevel]);
+  }, [currentLevel, resetGameState]);
 }

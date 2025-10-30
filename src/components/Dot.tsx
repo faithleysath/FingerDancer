@@ -22,22 +22,22 @@ const dotStyles = cva(
       {
         isTarget: true,
         isPressed: true,
-        className: 'bg-dot-pressed opacity-100',
+        className: 'bg-black opacity-100',
       },
       {
         isTarget: true,
         isPressed: false,
-        className: 'bg-transparent opacity-dot-inactive border-dot',
+        className: 'bg-transparent opacity-30 border-white',
       },
       {
         isPlayer: true,
         isPressed: true,
-        className: 'bg-dot opacity-100 border-dot',
+        className: 'bg-white opacity-100 border-white',
       },
       {
         isPlayer: true,
         isPressed: false,
-        className: 'bg-transparent opacity-dot-inactive border-dot',
+        className: 'bg-transparent opacity-30 border-white',
       }
     ],
     defaultVariants: {
