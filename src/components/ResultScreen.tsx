@@ -8,7 +8,7 @@ import {
   playerStateAtom,
   currentStepAtom,
   startTimeAtom,
-  type Level,
+  selectedLevelInfoAtom,
 } from '../atoms/gameAtoms';
 import { useEffect, useCallback } from 'react';
 import { audioManager } from '../lib/audio';
@@ -23,7 +23,7 @@ function ResultScreen() {
   const levelIndex = useAtomValue(levelIndexAtom);
   const [currentLevelIdx, setCurrentLevelIndex] = useAtom(currentLevelIndexAtom);
   const setScreen = useSetAtom(screenAtom);
-  const setCurrentLevel = useSetAtom(currentLevelAtom);
+  const setSelectedLevelInfo = useSetAtom(selectedLevelInfoAtom);
   const setPlayerState = useSetAtom(playerStateAtom);
   const setCurrentStep = useSetAtom(currentStepAtom);
   const setStartTime = useSetAtom(startTimeAtom);
@@ -39,23 +39,18 @@ function ResultScreen() {
     if (!hasNextLevel) return;
     const nextLevelIndex = currentLevelIdx + 1;
     const nextLevelInfo = levelIndex[nextLevelIndex];
-    try {
-      await enterFullscreen();
-      await lockOrientation('landscape');
-      const res = await fetch(`/levels/${nextLevelInfo.file}`);
-      const levelData: Level = await res.json();
-      
-      // Atomically update all state before switching screens
-      setCurrentLevel(levelData);
-      setCurrentLevelIndex(nextLevelIndex);
-      setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-      setCurrentStep(0);
-      setStartTime(0);
-      setScreen('game');
-    } catch (error) {
-      console.error('Failed to load next level:', error);
-    }
-  }, [hasNextLevel, currentLevelIdx, levelIndex, setCurrentLevel, setCurrentLevelIndex, setScreen, setPlayerState, setCurrentStep, setStartTime, enterFullscreen, lockOrientation]);
+    
+    await enterFullscreen();
+    await lockOrientation('landscape');
+    
+    // Atomically update all state before switching screens
+    setSelectedLevelInfo(nextLevelInfo);
+    setCurrentLevelIndex(nextLevelIndex);
+    setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    setCurrentStep(0);
+    setStartTime(0);
+    setScreen('game');
+  }, [hasNextLevel, currentLevelIdx, levelIndex, setSelectedLevelInfo, setCurrentLevelIndex, setScreen, setPlayerState, setCurrentStep, setStartTime, enterFullscreen, lockOrientation]);
 
   // "Any key to continue" effect
   useEffect(() => {
