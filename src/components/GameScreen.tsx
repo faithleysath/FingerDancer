@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { currentLevelAtom, playerStateAtom, currentStepAtom, startTimeAtom } from '../atoms/gameAtoms';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Dot from './Dot';
 
 const KEY_LABELS = ['A', 'S', 'D', 'F', 'SPACE', 'J', 'K', 'L', ';'];
@@ -30,12 +30,21 @@ function Timer() {
 }
 
 function GameScreen() {
+  return (
+    <Suspense fallback={<div className="text-center p-8">Loading level...</div>}>
+      <GameContent />
+    </Suspense>
+  );
+}
+
+function GameContent() {
   const currentLevel = useAtomValue(currentLevelAtom);
   const playerState = useAtomValue(playerStateAtom);
   const currentStep = useAtomValue(currentStepAtom);
 
   if (!currentLevel) {
-    return <div>Loading level...</div>;
+    // This should not happen due to Suspense, but as a fallback
+    return <div>Error: Level data is missing.</div>;
   }
 
   const targetPattern = currentLevel.patterns[currentStep];

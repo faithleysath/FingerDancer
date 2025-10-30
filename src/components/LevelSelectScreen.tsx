@@ -3,10 +3,9 @@ import { useAtom, useSetAtom, useAtomValue } from 'jotai';
 import {
   screenAtom,
   levelIndexAtom,
-  currentLevelAtom,
+  selectedLevelInfoAtom,
   scaleAtom,
   type LevelIndexInfo,
-  type Level,
   currentLevelIndexAtom,
 } from '../atoms/gameAtoms';
 import { audioManager, scales, type ScaleName } from '../lib/audio';
@@ -17,28 +16,23 @@ import { useScreenOrientation } from '../hooks/useScreenOrientation';
 function LevelList() {
   const levelIndex = useAtomValue(levelIndexAtom);
   const setScreen = useSetAtom(screenAtom);
-  const setCurrentLevel = useSetAtom(currentLevelAtom);
+  const setSelectedLevelInfo = useSetAtom(selectedLevelInfoAtom);
   const setCurrentLevelIndex = useSetAtom(currentLevelIndexAtom);
   const { enterFullscreen } = useFullscreen();
   const { lockOrientation } = useScreenOrientation();
 
   const handleLevelSelect = async (levelInfo: LevelIndexInfo, index: number) => {
-    try {
-      // Start audio context on first user interaction
-      if (!audioManager.isInitialized()) {
-        await audioManager.start();
-      }
-      
-      await enterFullscreen();
-      await lockOrientation('landscape');
-      const res = await fetch(`/levels/${levelInfo.file}`);
-      const levelData: Level = await res.json();
-      setCurrentLevel(levelData);
-      setCurrentLevelIndex(index);
-      setScreen('game');
-    } catch (error) {
-      console.error('Failed to load level:', error);
+    // Start audio context on first user interaction
+    if (!audioManager.isInitialized()) {
+      await audioManager.start();
     }
+
+    await enterFullscreen();
+    await lockOrientation('landscape');
+    
+    setSelectedLevelInfo(levelInfo);
+    setCurrentLevelIndex(index);
+    setScreen('game');
   };
 
   return (

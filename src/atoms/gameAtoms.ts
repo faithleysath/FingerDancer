@@ -33,11 +33,30 @@ export const levelIndexAtom = atom(async () => {
 // Controls the currently selected musical scale
 export const scaleAtom = atom<ScaleName | 'Custom'>('C Major Scale');
 
-// Holds the data for the currently selected level
-export const currentLevelAtom = atom<Level | null>(null);
+// Holds the info for the level the user has selected
+export const selectedLevelInfoAtom = atom<LevelIndexInfo | null>(null);
 
 // Holds the index of the current level being played
 export const currentLevelIndexAtom = atom<number>(-1);
+
+// Asynchronously fetches the data for the currently selected level
+export const currentLevelAtom = atom(async (get) => {
+  const levelInfo = get(selectedLevelInfoAtom);
+  if (!levelInfo) {
+    return null;
+  }
+
+  const response = await fetch(`/levels/${levelInfo.file}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch level: ${response.statusText}`);
+  }
+  const levelData = await response.json() as Level;
+  // Basic validation
+  if (!levelData.patterns || !levelData.ranks) {
+    throw new Error('Invalid level data format');
+  }
+  return levelData;
+});
 
 // Represents the player's current key presses [A, S, D, F, Space, J, K, L, ;]
 export const playerStateAtom = atom<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0]);
