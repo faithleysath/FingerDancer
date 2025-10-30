@@ -31,7 +31,7 @@ export const levelIndexAtom = atom(async () => {
 });
 
 // Controls the currently selected musical scale
-export const scaleAtom = atom<ScaleName | 'Custom'>('C Major Chord');
+export const scaleAtom = atom<ScaleName | 'Custom'>('C Major Scale');
 
 // Holds the data for the currently selected level
 export const currentLevelAtom = atom<Level | null>(null);
