@@ -14,7 +14,7 @@ function GameContainer() {
   const currentScreen = useAtomValue(screenAtom);
 
   return (
-    <main id="game-container">
+    <main id="game-container" className='flex justify-center content-center'>
       {screenComponents[currentScreen]}
     </main>
   );
