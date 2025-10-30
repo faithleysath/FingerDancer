@@ -32,7 +32,6 @@ function Timer() {
 
 function GameScreen() {
   useGameLogic(); // Initialize game logic and event listeners
-
   const currentLevel = useAtomValue(currentLevelAtom);
   const playerState = useAtomValue(playerStateAtom);
   const currentStep = useAtomValue(currentStepAtom);

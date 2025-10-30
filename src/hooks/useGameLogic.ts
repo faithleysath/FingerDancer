@@ -96,4 +96,6 @@ export function useGameLogic() {
   useEffect(() => {
     resetGameState();
   }, [currentLevel, resetGameState]);
+
+  return { resetGameState };
 }
