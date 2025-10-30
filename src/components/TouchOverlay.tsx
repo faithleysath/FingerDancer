@@ -1,6 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react';
-import { useAtomValue } from 'jotai';
-import { playerStateAtom } from '../atoms/gameAtoms';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 const KEY_MAP: Record<number, string> = {
   0: 'KeyA', 1: 'KeyS', 2: 'KeyD', 3: 'KeyF',
@@ -13,13 +11,10 @@ function dispatchKeyEvent(code: string, type: 'keydown' | 'keyup') {
 }
 
 function TouchOverlay() {
-  const playerState = useAtomValue(playerStateAtom);
+  const [pressedZones, setPressedZones] = useState(Array(9).fill(false));
   const zoneRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  
-  // --- Universal Input State ---
   const touchToZoneMap = useRef<Map<number, number>>(new Map());
-  const isMouseDown = useRef(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const getZoneIndexFromCoordinates = useCallback((x: number, y: number) => {
     for (let i = 0; i < zoneRefs.current.length; i++) {
@@ -38,95 +33,79 @@ function TouchOverlay() {
     const overlayNode = overlayRef.current;
     if (!overlayNode) return;
 
-    // --- Touch Events ---
     const handleTouchStart = (e: TouchEvent) => {
       e.preventDefault();
-      for (const touch of Array.from(e.changedTouches)) {
-        const zoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
-        if (zoneIndex !== -1 && !touchToZoneMap.current.has(touch.identifier)) {
-          touchToZoneMap.current.set(touch.identifier, zoneIndex);
-          dispatchKeyEvent(KEY_MAP[zoneIndex], 'keydown');
+      setPressedZones(currentPressed => {
+        const nextPressed = [...currentPressed];
+        for (const touch of Array.from(e.changedTouches)) {
+          const zoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
+          if (zoneIndex !== -1 && !touchToZoneMap.current.has(touch.identifier)) {
+            touchToZoneMap.current.set(touch.identifier, zoneIndex);
+            dispatchKeyEvent(KEY_MAP[zoneIndex], 'keydown');
+            nextPressed[zoneIndex] = true;
+          }
         }
-      }
+        return nextPressed;
+      });
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       e.preventDefault();
-      for (const touch of Array.from(e.changedTouches)) {
-        const oldZoneIndex = touchToZoneMap.current.get(touch.identifier);
-        const newZoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
-        if (oldZoneIndex !== newZoneIndex) {
-          if (oldZoneIndex !== undefined) dispatchKeyEvent(KEY_MAP[oldZoneIndex], 'keyup');
-          if (newZoneIndex !== -1) {
-            touchToZoneMap.current.set(touch.identifier, newZoneIndex);
-            dispatchKeyEvent(KEY_MAP[newZoneIndex], 'keydown');
-          } else {
-            touchToZoneMap.current.delete(touch.identifier);
+      setPressedZones(currentPressed => {
+        const nextPressed = [...currentPressed];
+        for (const touch of Array.from(e.changedTouches)) {
+          const oldZoneIndex = touchToZoneMap.current.get(touch.identifier);
+          const newZoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
+
+          if (oldZoneIndex !== newZoneIndex) {
+            // Release the old key
+            if (oldZoneIndex !== undefined) {
+              dispatchKeyEvent(KEY_MAP[oldZoneIndex], 'keyup');
+              nextPressed[oldZoneIndex] = false;
+            }
+            // Press the new key
+            if (newZoneIndex !== -1) {
+              touchToZoneMap.current.set(touch.identifier, newZoneIndex);
+              dispatchKeyEvent(KEY_MAP[newZoneIndex], 'keydown');
+              nextPressed[newZoneIndex] = true;
+            } else {
+              // Finger moved out of any valid zone
+              touchToZoneMap.current.delete(touch.identifier);
+            }
           }
         }
-      }
+        return nextPressed;
+      });
     };
 
     const handleTouchEndOrCancel = (e: TouchEvent) => {
       e.preventDefault();
-      for (const touch of Array.from(e.changedTouches)) {
-        const zoneIndex = touchToZoneMap.current.get(touch.identifier);
-        if (zoneIndex !== undefined) {
-          touchToZoneMap.current.delete(touch.identifier);
-          dispatchKeyEvent(KEY_MAP[zoneIndex], 'keyup');
+      setPressedZones(currentPressed => {
+        const nextPressed = [...currentPressed];
+        for (const touch of Array.from(e.changedTouches)) {
+          const zoneIndex = touchToZoneMap.current.get(touch.identifier);
+          if (zoneIndex !== undefined) {
+            touchToZoneMap.current.delete(touch.identifier);
+            dispatchKeyEvent(KEY_MAP[zoneIndex], 'keyup');
+            nextPressed[zoneIndex] = false;
+          }
         }
-      }
+        return nextPressed;
+      });
     };
 
-    // --- Mouse Events ---
-    const handleMouseDown = (e: MouseEvent) => {
-      e.preventDefault();
-      isMouseDown.current = true;
-      const zoneIndex = getZoneIndexFromCoordinates(e.clientX, e.clientY);
-      if (zoneIndex !== -1) {
-        dispatchKeyEvent(KEY_MAP[zoneIndex], 'keydown');
-      }
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isMouseDown.current) return;
-      e.preventDefault();
-      // This simplistic approach doesn't handle dragging between zones for mouse,
-      // as it can feel unnatural. It primarily ensures continuous pressing.
-      // A more complex implementation could track the last pressed zone.
-    };
-    
-    const handleMouseUp = (e: MouseEvent) => {
-      if (!isMouseDown.current) return;
-      e.preventDefault();
-      isMouseDown.current = false;
-      // Release all keys on mouse up to prevent stuck keys
-      for (let i = 0; i < playerState.length; i++) {
-        if (playerState[i] === 1) {
-          dispatchKeyEvent(KEY_MAP[i], 'keyup');
-        }
-      }
-    };
-
-    // Register all event listeners
     overlayNode.addEventListener('touchstart', handleTouchStart as EventListener, { passive: false });
     overlayNode.addEventListener('touchmove', handleTouchMove as EventListener, { passive: false });
     overlayNode.addEventListener('touchend', handleTouchEndOrCancel as EventListener, { passive: false });
     overlayNode.addEventListener('touchcancel', handleTouchEndOrCancel as EventListener, { passive: false });
-    overlayNode.addEventListener('mousedown', handleMouseDown as EventListener, { passive: false });
-    overlayNode.addEventListener('mousemove', handleMouseMove as EventListener, { passive: false });
-    window.addEventListener('mouseup', handleMouseUp as EventListener); // Listen on window to catch mouseup outside the overlay
 
     return () => {
       overlayNode.removeEventListener('touchstart', handleTouchStart as EventListener);
       overlayNode.removeEventListener('touchmove', handleTouchMove as EventListener);
       overlayNode.removeEventListener('touchend', handleTouchEndOrCancel as EventListener);
       overlayNode.removeEventListener('touchcancel', handleTouchEndOrCancel as EventListener);
-      overlayNode.removeEventListener('mousedown', handleMouseDown as EventListener);
-      overlayNode.removeEventListener('mousemove', handleMouseMove as EventListener);
-      window.removeEventListener('mouseup', handleMouseUp as EventListener);
     };
-  }, [getZoneIndexFromCoordinates, playerState]);
+  }, [getZoneIndexFromCoordinates]);
 
   return (
     <div
@@ -140,7 +119,7 @@ function TouchOverlay() {
             key={i}
             ref={el => { zoneRefs.current[i] = el; }}
             className={`flex-1 h-full border-r border-white/10 ${
-              playerState[i] ? 'bg-white/30' : 'bg-transparent'
+              pressedZones[i] ? 'bg-white/30' : 'bg-transparent'
             } transition-colors duration-200`}
           />
         ))}
@@ -148,7 +127,7 @@ function TouchOverlay() {
       <div
         ref={el => { zoneRefs.current[8] = el; }}
         className={`h-1/4 border-t border-white/10 ${
-          playerState[8] ? 'bg-white/30' : 'bg-transparent'
+          pressedZones[8] ? 'bg-white/30' : 'bg-transparent'
         } transition-colors duration-200`}
       />
     </div>

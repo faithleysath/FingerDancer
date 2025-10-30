@@ -5,9 +5,12 @@ import { screenAtom } from './atoms/gameAtoms';
 import GameContainer from './components/GameContainer';
 import { useGameLogic } from './hooks/useGameLogic';
 import { useGlobalAudio } from './hooks/useGlobalAudio';
+import { useEffect, useState } from 'react';
 import TouchOverlay from './components/TouchOverlay';
 import { useScreenOrientation } from './hooks/useScreenOrientation';
 import { useFullscreen } from './hooks/useFullscreen';
+
+const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 function App() {
   useGlobalAudio(); // Mount the global audio handler
@@ -15,6 +18,11 @@ function App() {
   const { lockOrientation, unlockOrientation } = useScreenOrientation();
   const [screen, setScreen] = useAtom(screenAtom);
   const { resetGameState } = useGameLogic();
+  const [showTouchOverlay, setShowTouchOverlay] = useState(false);
+
+  useEffect(() => {
+    setShowTouchOverlay(isTouchDevice());
+  }, []);
 
   const handleBackToMenu = () => {
     audioManager.releaseAll();
@@ -33,7 +41,7 @@ function App() {
         isFullscreen ? 'h-screen w-screen' : 'h-svh w-svw'
       }`}
     >
-      {screen === 'game' && <TouchOverlay />}
+      {screen === 'game' && showTouchOverlay && <TouchOverlay />}
       {screen === 'game' && (
         <div className="absolute top-4 right-4 flex items-center gap-4 z-20">
           <button
