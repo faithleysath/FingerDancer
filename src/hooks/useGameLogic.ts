@@ -71,12 +71,14 @@ export function useGameLogic() {
         setCurrentStep(step + 1);
       } else {
         audioManager.releaseAll();
+        pressedKeys.current.clear();
+        setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
         const endTime = Date.now();
         setFinalTime(endTime - time);
         setScreen('result');
       }
     }
-  }, [setCurrentStep, setFinalTime, setScreen]);
+  }, [setCurrentStep, setFinalTime, setScreen, setPlayerState]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

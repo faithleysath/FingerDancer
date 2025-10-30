@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai';
-import { RefreshCw, Home } from 'lucide-react';
+import { RefreshCw, Home, Maximize, Minimize } from 'lucide-react';
 import { audioManager } from './lib/audio';
 import { screenAtom } from './atoms/gameAtoms';
 import GameContainer from './components/GameContainer';
@@ -14,8 +14,8 @@ const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints
 
 function App() {
   useGlobalAudio(); // Mount the global audio handler
-  const { isFullscreen } = useFullscreen();
-  const { unlockOrientation } = useScreenOrientation();
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
+  const { lockOrientation, unlockOrientation } = useScreenOrientation();
   const [screen, setScreen] = useAtom(screenAtom);
   const { resetGameState } = useGameLogic();
   const [showTouchOverlay, setShowTouchOverlay] = useState(false);
@@ -30,6 +30,11 @@ function App() {
     setScreen('levelSelect');
   };
 
+  const handleToggleFullscreen = () => {
+    toggleFullscreen();
+    lockOrientation('landscape');
+  };
+
   return (
     <div
       className={`font-sans flex justify-center items-center bg-emerald-500 text-white overflow-hidden select-none relative ${
@@ -39,6 +44,13 @@ function App() {
       {screen === 'game' && showTouchOverlay && <TouchOverlay />}
       {screen === 'game' && (
         <div className="absolute top-4 right-4 flex items-center gap-4 z-20">
+          <button
+            onClick={handleToggleFullscreen}
+            className="p-2 text-white/50 hover:text-white transition-colors cursor-pointer"
+            title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+          >
+            {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+          </button>
           <button
             onClick={resetGameState}
             className="p-2 text-white/50 hover:text-white transition-colors cursor-pointer"
