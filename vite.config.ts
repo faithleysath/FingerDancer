@@ -16,8 +16,14 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // All node_modules are bundled together in the vendor chunk
           if (id.includes('node_modules')) {
+            if (id.includes('tone')) {
+              return 'tone'; // Create a separate chunk for Tone.js
+            }
+            if (id.includes('react-dom') || id.includes('react')) {
+              return 'react-vendor'; // Create a separate chunk for React libraries
+            }
+            // All other node_modules will be bundled in the default vendor chunk
             return 'vendor';
           }
         },
