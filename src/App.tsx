@@ -7,11 +7,13 @@ import { useGameLogic } from './hooks/useGameLogic';
 import { useGlobalAudio } from './hooks/useGlobalAudio';
 import { useEffect, useState } from 'react';
 import TouchOverlay from './components/TouchOverlay';
+import { useScreenOrientation } from './hooks/useScreenOrientation';
 
 const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 function App() {
   useGlobalAudio(); // Mount the global audio handler
+  const { unlockOrientation } = useScreenOrientation();
   const [screen, setScreen] = useAtom(screenAtom);
   const { resetGameState } = useGameLogic();
   const [showTouchOverlay, setShowTouchOverlay] = useState(false);
@@ -22,6 +24,7 @@ function App() {
 
   const handleBackToMenu = () => {
     audioManager.releaseAll();
+    unlockOrientation();
     setScreen('levelSelect');
   };
 

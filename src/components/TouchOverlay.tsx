@@ -17,7 +17,6 @@ function TouchOverlay() {
   const [pressedZones, setPressedZones] = useState<boolean[]>(Array(9).fill(false));
 
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>, index: number) => {
-    e.preventDefault();
     const code = KEY_MAP[index];
     if (code) {
       dispatchKeyEvent(code, 'keydown');
@@ -30,7 +29,6 @@ function TouchOverlay() {
   };
 
   const handleTouchEnd = (e: TouchEvent<HTMLDivElement>, index: number) => {
-    e.preventDefault();
     const code = KEY_MAP[index];
     if (code) {
       dispatchKeyEvent(code, 'keyup');
@@ -43,7 +41,10 @@ function TouchOverlay() {
   };
 
   return (
-    <div className="absolute inset-0 z-10 flex flex-col">
+    <div
+      className="absolute inset-0 z-10 flex flex-col"
+      style={{ touchAction: 'none' }}
+    >
       {/* Top 8 keys */}
       <div className="grow flex">
         {Array.from({ length: 8 }).map((_, i) => (

@@ -13,9 +13,11 @@ import {
 import { useEffect, useCallback } from 'react';
 import { audioManager } from '../lib/audio';
 import { useFullscreen } from '../hooks/useFullscreen';
+import { useScreenOrientation } from '../hooks/useScreenOrientation';
 
 function ResultScreen() {
   const { enterFullscreen } = useFullscreen();
+  const { lockOrientation, unlockOrientation } = useScreenOrientation();
   const finalTime = useAtomValue(finalTimeAtom);
   const currentLevel = useAtomValue(currentLevelAtom);
   const levelIndex = useAtomValue(levelIndexAtom);
@@ -34,6 +36,7 @@ function ResultScreen() {
     const nextLevelInfo = levelIndex[nextLevelIndex];
     try {
       await enterFullscreen();
+      await lockOrientation('landscape');
       const res = await fetch(`/levels/${nextLevelInfo.file}`);
       const levelData: Level = await res.json();
       
@@ -47,7 +50,7 @@ function ResultScreen() {
     } catch (error) {
       console.error('Failed to load next level:', error);
     }
-  }, [hasNextLevel, currentLevelIdx, levelIndex, setCurrentLevel, setCurrentLevelIndex, setScreen, setPlayerState, setCurrentStep, setStartTime, enterFullscreen]);
+  }, [hasNextLevel, currentLevelIdx, levelIndex, setCurrentLevel, setCurrentLevelIndex, setScreen, setPlayerState, setCurrentStep, setStartTime, enterFullscreen, lockOrientation]);
 
   // "Any key to continue" effect
   useEffect(() => {
@@ -95,6 +98,7 @@ function ResultScreen() {
 
   const handleBackToMenu = () => {
     audioManager.releaseAll();
+    unlockOrientation();
     setScreen('levelSelect');
   };
 

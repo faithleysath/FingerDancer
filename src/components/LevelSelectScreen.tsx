@@ -12,10 +12,12 @@ import {
 import { audioManager, scales, type ScaleName } from '../lib/audio';
 import { useMenuKeyboard } from '../hooks/useMenuKeyboard';
 import { useFullscreen } from '../hooks/useFullscreen';
+import { useScreenOrientation } from '../hooks/useScreenOrientation';
 
 function LevelSelectScreen() {
   useMenuKeyboard(); // Enable keyboard sounds on this screen
   const { enterFullscreen } = useFullscreen();
+  const { lockOrientation } = useScreenOrientation();
   const [levelIndex, setLevelIndex] = useAtom(levelIndexAtom);
   const [currentScale, setCurrentScale] = useAtom(scaleAtom);
   const setScreen = useSetAtom(screenAtom);
@@ -40,6 +42,7 @@ function LevelSelectScreen() {
       }
       
       await enterFullscreen();
+      await lockOrientation('landscape');
       const res = await fetch(`/levels/${levelInfo.file}`);
       const levelData: Level = await res.json();
       setCurrentLevel(levelData);
