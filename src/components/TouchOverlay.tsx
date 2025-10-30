@@ -43,7 +43,7 @@ function TouchOverlay() {
     });
   };
 
-  const handleTouchEndOrCancel = (e: TouchEvent<HTMLDivElement>) => {
+  const handleTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
     setPressedZones(currentPressed => {
       const nextPressed = [...currentPressed];
       for (const touch of Array.from(e.changedTouches)) {
@@ -58,13 +58,22 @@ function TouchOverlay() {
     });
   };
 
+  const handleTouchCancel = () => {
+    // When a touch is cancelled (e.g., by a system gesture), release all keys.
+    for (const zoneIndex of touchToZoneMap.current.values()) {
+      dispatchKeyEvent(KEY_MAP[zoneIndex], 'keyup');
+    }
+    touchToZoneMap.current.clear();
+    setPressedZones(Array(9).fill(false));
+  };
+
   return (
     <div
       className="absolute inset-0 z-10 flex flex-col"
       style={{ touchAction: 'none' }}
       onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEndOrCancel}
-      onTouchCancel={handleTouchEndOrCancel}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}
     >
       <div className="grow flex">
         {Array.from({ length: 8 }).map((_, i) => (
