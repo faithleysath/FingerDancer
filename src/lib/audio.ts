@@ -27,7 +27,7 @@ function buildScaleMap(scaleName: ScaleName): Record<string, string> {
   return scaleMap;
 }
 
-currentScale = buildScaleMap('C Major Chord');
+currentScale = buildScaleMap('C Major Scale');
 
 async function initializeAudio() {
   if (audioInitialized) return;
