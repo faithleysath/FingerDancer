@@ -29,33 +29,33 @@ function TouchOverlay() {
   }, []);
 
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    for (const touch of Array.from(e.changedTouches)) {
-      const zoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
-      if (zoneIndex !== -1 && !touchToZoneMap.current.has(touch.identifier)) {
-        touchToZoneMap.current.set(touch.identifier, zoneIndex);
-        dispatchKeyEvent(KEY_MAP[zoneIndex], 'keydown');
-        setPressedZones(prev => {
-          const next = [...prev];
-          next[zoneIndex] = true;
-          return next;
-        });
+    setPressedZones(currentPressed => {
+      const nextPressed = [...currentPressed];
+      for (const touch of Array.from(e.changedTouches)) {
+        const zoneIndex = getZoneIndexFromCoordinates(touch.clientX, touch.clientY);
+        if (zoneIndex !== -1 && !touchToZoneMap.current.has(touch.identifier)) {
+          touchToZoneMap.current.set(touch.identifier, zoneIndex);
+          dispatchKeyEvent(KEY_MAP[zoneIndex], 'keydown');
+          nextPressed[zoneIndex] = true;
+        }
       }
-    }
+      return nextPressed;
+    });
   };
 
   const handleTouchEndOrCancel = (e: TouchEvent<HTMLDivElement>) => {
-    for (const touch of Array.from(e.changedTouches)) {
-      const zoneIndex = touchToZoneMap.current.get(touch.identifier);
-      if (zoneIndex !== undefined) {
-        touchToZoneMap.current.delete(touch.identifier);
-        dispatchKeyEvent(KEY_MAP[zoneIndex], 'keyup');
-        setPressedZones(prev => {
-          const next = [...prev];
-          next[zoneIndex] = false;
-          return next;
-        });
+    setPressedZones(currentPressed => {
+      const nextPressed = [...currentPressed];
+      for (const touch of Array.from(e.changedTouches)) {
+        const zoneIndex = touchToZoneMap.current.get(touch.identifier);
+        if (zoneIndex !== undefined) {
+          touchToZoneMap.current.delete(touch.identifier);
+          dispatchKeyEvent(KEY_MAP[zoneIndex], 'keyup');
+          nextPressed[zoneIndex] = false;
+        }
       }
-    }
+      return nextPressed;
+    });
   };
 
   return (
