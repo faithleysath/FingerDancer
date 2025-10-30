@@ -37,7 +37,7 @@ function ResultScreen() {
       // Atomically update all state before switching screens
       setCurrentLevel(levelData);
       setCurrentLevelIndex(nextLevelIndex);
-      setPlayerState([0, 0, 0, 0, 0]);
+      setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
       setCurrentStep(0);
       setStartTime(0);
       setScreen('game');
