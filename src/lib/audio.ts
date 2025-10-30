@@ -4,37 +4,30 @@ let polySynth: Tone.PolySynth;
 let reverb: Tone.Reverb;
 let audioInitialized = false;
 
+const KEYS = ['a', 's', 'd', 'f', ' ', 'j', 'k', 'l', ';'];
+
 export const scales = {
-  'C Major Chord': {
-    'a': 'C2', 's': 'E2', 'd': 'G2', 'f': 'A2',
-    ' ': 'C3',
-    'j': 'G3', 'k': 'A3', 'l': 'C4', ';': 'E4',
-  },
-  'C Major Scale': {
-    'a': 'C2', 's': 'D2', 'd': 'E2', 'f': 'F2',
-    ' ': 'G2',
-    'j': 'A2', 'k': 'B2', 'l': 'C3', ';': 'D3',
-  },
-  'Pentatonic': {
-    'a': 'C2', 's': 'D2', 'd': 'E2', 'f': 'G2',
-    ' ': 'A2',
-    'j': 'C3', 'k': 'D3', 'l': 'E3', ';': 'G3',
-  },
-  'Harmonic Minor': {
-    'a': 'C2', 's': 'D2', 'd': 'Eb2', 'f': 'F2',
-    ' ': 'G2',
-    'j': 'Ab2', 'k': 'B2', 'l': 'C3', ';': 'D3',
-  },
-  'Blues': {
-    'a': 'C2', 's': 'Eb2', 'd': 'F2', 'f': 'F#2',
-    ' ': 'G2',
-    'j': 'Bb2', 'k': 'C3', 'l': 'Eb3', ';': 'F3',
-  },
+  'C Major Chord': ['C2', 'E2', 'G2', 'A2', 'C3', 'G3', 'A3', 'C4', 'E4'],
+  'C Major Scale': ['C2', 'D2', 'E2', 'F2', 'G2', 'A2', 'B2', 'C3', 'D3'],
+  'Pentatonic':    ['C2', 'D2', 'E2', 'G2', 'A2', 'C3', 'D3', 'E3', 'G3'],
+  'Harmonic Minor':['C2', 'D2', 'Eb2', 'F2', 'G2', 'Ab2', 'B2', 'C3', 'D3'],
+  'Blues':         ['C2', 'Eb2', 'F2', 'F#2', 'G2', 'Bb2', 'C3', 'Eb3', 'F3'],
 };
 
 export type ScaleName = keyof typeof scales;
 
-let currentScale: Record<string, string> = scales['C Major Chord'];
+let currentScale: Record<string, string> = {};
+
+function buildScaleMap(scaleName: ScaleName): Record<string, string> {
+  const notes = scales[scaleName];
+  const scaleMap: Record<string, string> = {};
+  KEYS.forEach((key, index) => {
+    scaleMap[key] = notes[index];
+  });
+  return scaleMap;
+}
+
+currentScale = buildScaleMap('C Major Chord');
 
 async function initializeAudio() {
   if (audioInitialized) return;
@@ -49,7 +42,14 @@ async function initializeAudio() {
 export const audioManager = {
   start: initializeAudio,
   setScale: (scaleName: ScaleName) => {
-    currentScale = scales[scaleName];
+    currentScale = buildScaleMap(scaleName);
+  },
+  setCustomScale: (notes: string[]) => {
+    const scaleMap: Record<string, string> = {};
+    KEYS.forEach((key, index) => {
+      scaleMap[key] = notes[index];
+    });
+    currentScale = scaleMap;
   },
   playNote: (key: string) => {
     if (!audioInitialized) return;
