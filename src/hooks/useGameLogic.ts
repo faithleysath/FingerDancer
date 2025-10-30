@@ -10,10 +10,16 @@ import {
 } from '../atoms/gameAtoms';
 import { audioManager } from '../lib/audio';
 
-const KEY_MAP: Record<string, number> = {
-  'a': 0, 's': 1, 'd': 2, 'f': 3,
-  ' ': 4,
-  'j': 5, 'k': 6, 'l': 7, ';': 8
+const CODE_MAP: Record<string, { index: number, key: string }> = {
+  'KeyA': { index: 0, key: 'a' },
+  'KeyS': { index: 1, key: 's' },
+  'KeyD': { index: 2, key: 'd' },
+  'KeyF': { index: 3, key: 'f' },
+  'Space': { index: 4, key: ' ' },
+  'KeyJ': { index: 5, key: 'j' },
+  'KeyK': { index: 6, key: 'k' },
+  'KeyL': { index: 7, key: 'l' },
+  'Semicolon': { index: 8, key: ';' },
 };
 
 export function useGameLogic() {
@@ -51,8 +57,8 @@ export function useGameLogic() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const keyIndex = KEY_MAP[e.key];
-      if (keyIndex === undefined || !currentLevel) return;
+      const keyInfo = CODE_MAP[e.code];
+      if (keyInfo === undefined || !currentLevel) return;
 
       e.preventDefault();
 
@@ -61,24 +67,24 @@ export function useGameLogic() {
         setStartTime(Date.now());
       }
 
-      if (playerState[keyIndex] === 1) return; // Key already pressed
+      if (playerState[keyInfo.index] === 1) return; // Key already pressed
 
-      audioManager.playNote(e.key);
+      audioManager.playNote(keyInfo.key);
       const newState = [...playerState];
-      newState[keyIndex] = 1;
+      newState[keyInfo.index] = 1;
       setPlayerState(newState);
       checkWinCondition(newState);
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      const keyIndex = KEY_MAP[e.key];
-      if (keyIndex === undefined || !currentLevel) return;
+      const keyInfo = CODE_MAP[e.code];
+      if (keyInfo === undefined || !currentLevel) return;
 
-      if (playerState[keyIndex] === 0) return; // Key already released
+      if (playerState[keyInfo.index] === 0) return; // Key already released
 
-      audioManager.releaseNote(e.key);
+      audioManager.releaseNote(keyInfo.key);
       const newState = [...playerState];
-      newState[keyIndex] = 0;
+      newState[keyInfo.index] = 0;
       setPlayerState(newState);
       checkWinCondition(newState);
     };

@@ -3,10 +3,16 @@ import { useAtomValue } from 'jotai';
 import { screenAtom } from '../atoms/gameAtoms';
 import { audioManager } from '../lib/audio';
 
-const KEY_MAP: Record<string, number> = {
-  'a': 0, 's': 1, 'd': 2, 'f': 3,
-  ' ': 4,
-  'j': 5, 'k': 6, 'l': 7, ';': 8
+const CODE_MAP: Record<string, { index: number, key: string }> = {
+  'KeyA': { index: 0, key: 'a' },
+  'KeyS': { index: 1, key: 's' },
+  'KeyD': { index: 2, key: 'd' },
+  'KeyF': { index: 3, key: 'f' },
+  'Space': { index: 4, key: ' ' },
+  'KeyJ': { index: 5, key: 'j' },
+  'KeyK': { index: 6, key: 'k' },
+  'KeyL': { index: 7, key: 'l' },
+  'Semicolon': { index: 8, key: ';' },
 };
 
 export function useMenuKeyboard() {
@@ -19,7 +25,8 @@ export function useMenuKeyboard() {
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (KEY_MAP[e.key] === undefined) return;
+      const keyInfo = CODE_MAP[e.code];
+      if (keyInfo === undefined) return;
       e.preventDefault();
       
       // Initialize audio on first key press if not already done
@@ -27,13 +34,14 @@ export function useMenuKeyboard() {
         audioManager.start();
       }
       
-      audioManager.playNote(e.key);
+      audioManager.playNote(keyInfo.key);
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (KEY_MAP[e.key] === undefined) return;
+      const keyInfo = CODE_MAP[e.code];
+      if (keyInfo === undefined) return;
       e.preventDefault();
-      audioManager.releaseNote(e.key);
+      audioManager.releaseNote(keyInfo.key);
     };
 
     window.addEventListener('keydown', handleKeyDown);
