@@ -9,11 +9,13 @@ const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints
  */
 export function useScreenOrientation() {
   const lockOrientation = useCallback(async (type: OrientationLockType) => {
-    if (!isTouchDevice() || !screen.orientation || typeof screen.orientation.lock !== 'function') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const orientation = screen.orientation as any;
+    if (!isTouchDevice() || !orientation || typeof orientation.lock !== 'function') {
       return;
     }
     try {
-      await screen.orientation.lock(type);
+      await orientation.lock(type);
     } catch (error) {
       // This can happen if the user denies the request or the browser doesn't support it.
       // We can safely ignore this error.
@@ -22,11 +24,13 @@ export function useScreenOrientation() {
   }, []);
 
   const unlockOrientation = useCallback(() => {
-    if (!isTouchDevice() || !screen.orientation || typeof screen.orientation.unlock !== 'function') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const orientation = screen.orientation as any;
+    if (!isTouchDevice() || !orientation || typeof orientation.unlock !== 'function') {
       return;
     }
     try {
-      screen.orientation.unlock();
+      orientation.unlock();
     } catch (error) {
       console.warn('Could not unlock screen orientation:', error);
     }
