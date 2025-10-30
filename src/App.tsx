@@ -29,7 +29,7 @@ function App() {
   };
 
   return (
-    <div className="font-sans flex justify-center items-center h-screen bg-emerald-500 text-white overflow-hidden select-none relative">
+    <div className="font-sans flex justify-center items-center h-svh bg-emerald-500 text-white overflow-hidden select-none relative">
       {screen === 'game' && showTouchOverlay && <TouchOverlay />}
       {screen === 'game' && (
         <div className="absolute top-4 right-4 flex items-center gap-4 z-20">
