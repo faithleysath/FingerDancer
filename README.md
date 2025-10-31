@@ -31,7 +31,7 @@
     <img src="https://vercel.com/button" alt="Deploy with Vercel" height="30">
   </a>
 </div>
-
+<br />
 </div>
 
 **Finger Dancer** 是一个开源的音乐节奏游戏，灵感来源于[《Fingerdance》](https://store.steampowered.com/app/3633450/Fingerdance/)。它使用现代 Web 技术构建，旨在提供一个响应迅速、视觉吸引力强且高度可定制的游戏体验。无论你是在桌面设备上使用键盘，还是在移动设备上触摸屏幕，都可以享受到跟随节奏敲击音符的乐趣。
