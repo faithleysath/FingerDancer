@@ -18,10 +18,6 @@
 
 </div>
 
-<div align="center">
-<kbd><img src="./screenshots/HomePage.png" alt="Finger Dancer Home Page" width="80%"/></kbd>
-</div>
-
 **Finger Dancer** 是一个开源的音乐节奏游戏，灵感来源于经典的键盘演奏游戏。它使用现代 Web 技术构建，旨在提供一个响应迅速、视觉吸引力强且高度可定制的游戏体验。无论你是在桌面设备上使用键盘，还是在移动设备上触摸屏幕，都可以享受到跟随节奏敲击音符的乐趣。
 
 ## 📖 目录
@@ -109,7 +105,14 @@ src
 
 ## 📸 截图
 
-| 游戏界面 (桌面) | 游戏界面 (移动端) |
+**桌面端**
+
+| 游戏界面 1 | 游戏界面 2 |
 | :---: | :---: |
-| <img src="./screenshots/GameScreen1.png" alt="Game Screen on Desktop" width="100%"/> | <img src="./screenshots/MobileGameScreen1.png" alt="Game Screen on Mobile" width="100%"/> |
-| <img src="./screenshots/GameScreen2.png" alt="Game Screen on Desktop 2" width="100%"/> | <img src="./screenshots/MobileGameScreen2.png" alt="Game Screen on Mobile 2" width="100%"/> |
+| <img src="./screenshots/GameScreen1.png" alt="Game Screen on Desktop" width="100%"/> | <img src="./screenshots/GameScreen2.png" alt="Game Screen on Desktop 2" width="100%"/> |
+
+**移动端**
+
+| 游戏界面 1 | 游戏界面 2 |
+| :---: | :---: |
+| <img src="./screenshots/MobileGameScreen1.png" alt="Game Screen on Mobile" width="100%"/> | <img src="./screenshots/MobileGameScreen2.png" alt="Game Screen on Mobile 2" width="100%"/> |
