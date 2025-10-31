@@ -16,6 +16,9 @@
 [![Tone.js](https://img.shields.io/badge/Tone.js-15-F9A825?logo=javascript)](https://tonejs.github.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer)
+
 </div>
 
 **Finger Dancer** 是一个开源的音乐节奏游戏，灵感来源于经典的键盘演奏游戏。它使用现代 Web 技术构建，旨在提供一个响应迅速、视觉吸引力强且高度可定制的游戏体验。无论你是在桌面设备上使用键盘，还是在移动设备上触摸屏幕，都可以享受到跟随节奏敲击音符的乐趣。
