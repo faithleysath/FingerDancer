@@ -1,3 +1,4 @@
+中文 | [English](./README.en.md)
 <div align="center">
 
 <img src="./public/logo.png" alt="Finger Dancer Logo" width="200" />
@@ -26,8 +27,6 @@
     <img src="https://vercel.com/button" alt="Deploy with Vercel" height="30">
   </a>
 </div>
-
-中文 | [English](./README.en.md)
 
 </div>
 
