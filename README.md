@@ -8,11 +8,19 @@
 
 </div>
 
+<div align="center">
+
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-Rolldown-646CFF?logo=vite)](https://vitejs.dev/)
 [![Jotai](https://img.shields.io/badge/Jotai-2-black?logo=jotai)](https://jotai.org/)
 [![Tone.js](https://img.shields.io/badge/Tone.js-15-F9A825?logo=javascript)](https://tonejs.github.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+
+</div>
+
+<div align="center">
+<kbd><img src="./screenshots/HomePage.png" alt="Finger Dancer Home Page" width="80%"/></kbd>
+</div>
 
 **Finger Dancer** 是一个开源的音乐节奏游戏，灵感来源于经典的键盘演奏游戏。它使用现代 Web 技术构建，旨在提供一个响应迅速、视觉吸引力强且高度可定制的游戏体验。无论你是在桌面设备上使用键盘，还是在移动设备上触摸屏幕，都可以享受到跟随节奏敲击音符的乐趣。
 
@@ -22,6 +30,7 @@
 * [技术栈](#-技术栈)
 * [快速开始](#-快速开始)
 * [项目结构](#-项目结构)
+* [截图](#-截图)
 * [贡献指南](#-贡献指南)
 * [许可证](#-许可证)
 
@@ -96,12 +105,11 @@ src
 
 ## ⚖️ 许可证
 
-本项目当前未指定许可证。
+本项目采用 [MIT 许可证](https://opensource.org/licenses/MIT)。
 
----
+## 📸 截图
 
-<div align="center">
-  <a href="https://github.com/faithleysath/FingerDancer">
-    <img src="https://socialify.git.ci/faithleysath/FingerDancer/image?description=1&font=Inter&forks=1&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Ffaithleysath%2FKagari%2Frefs%2Fheads%2Fmain%2Flogo%2Flogo.svg&name=1&owner=1&pattern=Plus&pulls=1&stargazers=1&theme=Auto" alt="FingerDancer" width="640" height="320" />
-  </a>
-</div>
+| 游戏界面 (桌面) | 游戏界面 (移动端) |
+| :---: | :---: |
+| <img src="./screenshots/GameScreen1.png" alt="Game Screen on Desktop" width="100%"/> | <img src="./screenshots/MobileGameScreen1.png" alt="Game Screen on Mobile" width="100%"/> |
+| <img src="./screenshots/GameScreen2.png" alt="Game Screen on Desktop 2" width="100%"/> | <img src="./screenshots/MobileGameScreen2.png" alt="Game Screen on Mobile 2" width="100%"/> |
