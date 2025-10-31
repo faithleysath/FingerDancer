@@ -16,8 +16,17 @@
 [![Tone.js](https://img.shields.io/badge/Tone.js-15-F9A825?logo=javascript)](https://tonejs.github.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer)
+<p style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+  <a href="http://fd.isok.dev">
+    <img src="https://img.shields.io/badge/Live-Demo-brightgreen" alt="Live Demo" height="25">
+  </a>
+  <a href="https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer">
+    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="25">
+  </a>
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" height="30">
+  </a>
+</p>
 
 [中文](./README.md) | English
 
