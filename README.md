@@ -19,6 +19,8 @@
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer)
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer)
 
+中文 | [English](./README.en.md)
+
 </div>
 
 **Finger Dancer** 是一个开源的音乐节奏游戏，灵感来源于经典的键盘演奏游戏。它使用现代 Web 技术构建，旨在提供一个响应迅速、视觉吸引力强且高度可定制的游戏体验。无论你是在桌面设备上使用键盘，还是在移动设备上触摸屏幕，都可以享受到跟随节奏敲击音符的乐趣。
@@ -119,3 +121,11 @@ src
 | 游戏界面 1 | 游戏界面 2 |
 | :---: | :---: |
 | <img src="./screenshots/MobileGameScreen1.png" alt="Game Screen on Mobile" width="100%"/> | <img src="./screenshots/MobileGameScreen2.png" alt="Game Screen on Mobile 2" width="100%"/> |
+
+## Star History
+
+[![Star History Chart](https://app.repohistory.com/api/svg?repo=faithleysath/FingerDancer&type=Date&background=FFFFFF&color=f86262)](https://app.repohistory.com/star-history)
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/faithleysath/FingerDancer.svg?background=%23FFFFFF&axis=%23333333&line=%23e76060)](https://starchart.cc/faithleysath/FingerDancer)
