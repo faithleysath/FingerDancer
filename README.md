@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./public/logo.jpg" alt="Finger Dancer Logo" width="200"/>
+<img src="./public/logo.jpg" alt="Finger Dancer Logo" width="200" style="mix-blend-mode: multiply;" />
 
 # Finger Dancer
 
