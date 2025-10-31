@@ -1,3 +1,7 @@
+<div align="right">
+[中文](./README.md) | English
+</div>
+
 <div align="center">
 
 <img src="./public/logo.png" alt="Finger Dancer Logo" width="200" />
@@ -15,20 +19,17 @@
 [![Jotai](https://img.shields.io/badge/Jotai-2-black?logo=jotai)](https://jotai.org/)
 [![Tone.js](https://img.shields.io/badge/Tone.js-15-F9A825?logo=javascript)](https://tonejs.github.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](http://fd.isok.dev)
 
-<p style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-  <a href="http://fd.isok.dev">
-    <img src="https://img.shields.io/badge/Live-Demo-brightgreen" alt="Live Demo" height="25">
-  </a>
+<div align="center">
   <a href="https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer">
-    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="25">
+    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="30">
   </a>
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" height="30">
   </a>
-</p>
-
-[中文](./README.md) | English
+</div>
 
 </div>
 
