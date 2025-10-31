@@ -1,75 +1,107 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img src="./public/logo.jpg" alt="Finger Dancer Logo" width="200"/>
 
-Currently, two official plugins are available:
+# Finger Dancer
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**一个基于 Web 的音乐节奏游戏，旨在通过键盘或触摸操作，提供流畅、有趣的音乐体验。**
 
-## React Compiler
+</div>
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-Rolldown-646CFF?logo=vite)](https://vitejs.dev/)
+[![Jotai](https://img.shields.io/badge/Jotai-2-black?logo=jotai)](https://jotai.org/)
+[![Tone.js](https://img.shields.io/badge/Tone.js-15-F9A825?logo=javascript)](https://tonejs.github.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 
-Note: This will impact Vite dev & build performances.
+**Finger Dancer** 是一个开源的音乐节奏游戏，灵感来源于经典的键盘演奏游戏。它使用现代 Web 技术构建，旨在提供一个响应迅速、视觉吸引力强且高度可定制的游戏体验。无论你是在桌面设备上使用键盘，还是在移动设备上触摸屏幕，都可以享受到跟随节奏敲击音符的乐趣。
 
-## Expanding the ESLint configuration
+## 📖 目录
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* [核心特性](#-核心特性)
+* [技术栈](#-技术栈)
+* [快速开始](#-快速开始)
+* [项目结构](#-项目结构)
+* [贡献指南](#-贡献指南)
+* [许可证](#-许可证)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## ✨ 核心特性
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+*   **🎹 动态音阶系统 (Dynamic Scale System)**
+    *   内置多种音乐音阶（如 C 大调、五声音阶、布鲁斯等），每次按键都会产生和谐的音乐反馈。
+    *   支持用户自定义音阶，创造属于你自己的音乐主题。
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+*   **📱 跨平台兼容 (Cross-Platform Compatibility)**
+    *   完美适配桌面键盘操作（A, S, D, F, Space, J, K, L, ;）。
+    *   为移动设备提供全屏触摸覆盖层，模拟真实的键盘按键体验。
+
+*   **🚀 现代 Web 技术 (Modern Web Tech)**
+    *   使用 React 19 和 Vite (Rolldown) 构建，提供极速的开发体验和优异的性能。
+    *   采用 Jotai 进行状态管理，代码简洁且易于维护。
+    *   利用 Tone.js 实现高质量的 Web Audio 合成。
+
+*   **🎨 可定制界面 (Customizable UI)**
+    *   使用 Tailwind CSS 构建，界面美观且响应式。
+    *   通过简单的组件化设计，可以轻松扩展和定制游戏外观。
+
+## 🛠️ 技术栈
+
+*   **前端框架:** [React 19](https://reactjs.org/)
+*   **构建工具:** [Vite (Rolldown)](https://vitejs.dev/)
+*   **状态管理:** [Jotai](https://jotai.org/)
+*   **音频合成:** [Tone.js](https://tonejs.github.io/)
+*   **UI/样式:** [Tailwind CSS](https://tailwindcss.com/)
+*   **语言:** [TypeScript](https://www.typescriptlang.org/)
+
+## 🚀 快速开始
+
+1.  克隆仓库：
+    ```bash
+    git clone https://github.com/faithleysath/FingerDancer.git
+    ```
+2.  安装依赖：
+    ```bash
+    cd FingerDancer
+    bun install
+    ```
+3.  运行开发服务器：
+    ```bash
+    bun run dev
+    ```
+4.  构建生产版本：
+    ```bash
+    bun run build
+    ```
+
+## 📂 项目结构
+
+```
+src
+├── atoms/         # Jotai atoms (全局状态)
+├── components/    # React 组件
+├── hooks/         # 自定义 React Hooks
+├── lib/           # 核心库 (例如 audio.ts)
+└── App.tsx        # 应用主入口
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🤝 贡献指南
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+我们欢迎所有形式的贡献！
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1.  Fork 本仓库
+2.  创建你的特性分支 (`git checkout -b feature/YourFeature`)
+3.  提交你的更改 (`git commit -m 'Add some YourFeature'`)
+4.  推送到分支 (`git push origin feature/YourFeature`)
+5.  提交一个 Pull Request
+
+## ⚖️ 许可证
+
+本项目当前未指定许可证。
+
+---
+
+<div align="center">
+  <a href="https://github.com/faithleysath/FingerDancer">
+    <img src="https://socialify.git.ci/faithleysath/FingerDancer/image?description=1&font=Inter&forks=1&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Ffaithleysath%2FKagari%2Frefs%2Fheads%2Fmain%2Flogo%2Flogo.svg&name=1&owner=1&pattern=Plus&pulls=1&stargazers=1&theme=Auto" alt="FingerDancer" width="640" height="320" />
+  </a>
+</div>
