@@ -35,7 +35,7 @@ async function initializeAudio() {
   await Tone.start();
   reverb = new Tone.Reverb(0.7).toDestination();
   polySynth = new Tone.PolySynth(Tone.Synth, {
-    volume: 20,
+    volume: 10,
   }).connect(reverb);
   audioInitialized = true;
   console.log('Audio context started and initialized.');
