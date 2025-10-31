@@ -10,5 +10,19 @@
   { "id": 9, "name": "9. Frère Jacques", "file": "9.json" },
   { "id": 10, "name": "10. Ode to Joy", "file": "10.json" },
   { "id": 11, "name": "11. Für Elise - Simple", "file": "11.json" },
-  { "id": 12, "name": "12. 小星星 (带和弦版)", "file": "12.json" }
+  { "id": 12, "name": "12. 小星星 (带和弦版)", "file": "12.json" },
+  { "id": 13, "name": "13. 準備運動", "file": "13.json" },
+  { "id": 14, "name": "14. 往復", "file": "14.json" },
+  { "id": 15, "name": "15. 交互1", "file": "15.json" },
+  { "id": 16, "name": "16. 階段", "file": "16.json" },
+  { "id": 17, "name": "17. 二本一体往復", "file": "17.json" },
+  { "id": 18, "name": "18. 無限往復", "file": "18.json" },
+  { "id": 19, "name": "19. 網", "file": "19.json" },
+  { "id": 20, "name": "20. ランダム1", "file": "20.json" },
+  { "id": 21, "name": "21. 交互2", "file": "21.json" },
+  { "id": 22, "name": "22. 二重往復", "file": "22.json" },
+  { "id": 23, "name": "23. ランダム2", "file": "23.json" },
+  { "id": 24, "name": "24. カオス", "file": "24.json" },
+  { "id": 25, "name": "25. 無限二重往復", "file": "25.json" },
+  { "id": 26, "name": "26. まとめ", "file": "26.json" }
 ]
