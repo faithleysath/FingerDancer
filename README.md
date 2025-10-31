@@ -1,6 +1,8 @@
 <div align="right">
+
 中文 | [English](./README.en.md)
 </div>
+
 <div align="center">
 
 <img src="./public/logo.png" alt="Finger Dancer Logo" width="200" />
