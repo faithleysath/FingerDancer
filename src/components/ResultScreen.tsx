@@ -100,6 +100,11 @@ function ResultScreen() {
   const handleBackToMenu = () => {
     audioManager.releaseAll();
     unlockOrientation();
+    // Reset game state when going back to menu
+    setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    setCurrentStep(0);
+    setStartTime(0);
+    setSelectedLevelInfo(null);
     setScreen('levelSelect');
   };
 

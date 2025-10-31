@@ -7,6 +7,9 @@ import {
   scaleAtom,
   type LevelIndexInfo,
   currentLevelIndexAtom,
+  playerStateAtom,
+  currentStepAtom,
+  startTimeAtom,
 } from '../atoms/gameAtoms';
 import { audioManager, scales, type ScaleName } from '../lib/audio';
 import { useMenuKeyboard } from '../hooks/useMenuKeyboard';
@@ -18,6 +21,9 @@ function LevelList() {
   const setScreen = useSetAtom(screenAtom);
   const setSelectedLevelInfo = useSetAtom(selectedLevelInfoAtom);
   const setCurrentLevelIndex = useSetAtom(currentLevelIndexAtom);
+  const setPlayerState = useSetAtom(playerStateAtom);
+  const setCurrentStep = useSetAtom(currentStepAtom);
+  const setStartTime = useSetAtom(startTimeAtom);
   const { enterFullscreen } = useFullscreen();
   const { lockOrientation } = useScreenOrientation();
 
@@ -29,6 +35,11 @@ function LevelList() {
 
     await enterFullscreen();
     await lockOrientation('landscape');
+    
+    // Reset game state before starting a new level
+    setPlayerState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    setCurrentStep(0);
+    setStartTime(0);
     
     setSelectedLevelInfo(levelInfo);
     setCurrentLevelIndex(index);
