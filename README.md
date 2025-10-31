@@ -18,13 +18,13 @@
 
 <div align="center">
   <a href="http://fd.isok.dev">
-    <img src="https://img.shields.io/badge/Live-Demo-brightgreen" alt="Live Demo" height="30">
+    <img src="https://img.shields.io/badge/Live-Demo-brightgreen" alt="Live Demo" height="30" min-height="30">
   </a>
   <a href="https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer">
-    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="30">
+    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" height="30" min-height="30">
   </a>
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer">
-    <img src="https://vercel.com/button" alt="Deploy with Vercel" height="30">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" height="30" min-height="30">
   </a>
 <div align="center">
 
