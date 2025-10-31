@@ -25,7 +25,7 @@
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ffaithleysath%2FFingerDancer">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" height="30">
   </a>
-<div align="center">
+</div>
 
 中文 | [English](./README.en.md)
 
